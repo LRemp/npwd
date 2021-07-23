@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { matchState, useUnformattedProfiles } from './state';
+import { matchState, useFormattedProfiles } from './state';
 
 import { FormattedProfile, MatchEvents, Profile } from '../../../../../typings/match';
 import { useNuiRequest } from 'fivem-nui-react-lib';
@@ -14,15 +14,12 @@ interface IUseProfiles {
 
 export const useProfiles = (): IUseProfiles => {
   const Nui = useNuiRequest();
-  const [profiles, setProfiles] = useUnformattedProfiles();
+  const [profiles, setProfiles] = useFormattedProfiles();
   const error = useRecoilValue(matchState.errorLoadingProfiles);
-  const { formatProfile } = useMatchActions();
-
-  const formattedProfiles = profiles.map(formatProfile);
 
   const setViewed = (id: number, liked: boolean) => {
-    setProfiles((formattedProfiles) =>
-      formattedProfiles.map((profile) => {
+    setProfiles((profiles) =>
+      profiles.map((profile) => {
         if (id === profile.id) return { ...profile, viewed: true, liked };
         return profile;
       }),
@@ -31,10 +28,8 @@ export const useProfiles = (): IUseProfiles => {
     Nui.send(MatchEvents.SAVE_LIKES, [{ id, liked }]);
   };
 
-  const filteredProfiles = formattedProfiles
-    ? formattedProfiles.filter((profile) => !profile.viewed)
-    : null;
-  const activeProfile = formattedProfiles ? filteredProfiles[0] : null;
+  const filteredProfiles = profiles ? profiles.filter((profile) => !profile.viewed) : null;
+  const activeProfile = profiles ? filteredProfiles[0] : null;
 
-  return { profiles: formattedProfiles, activeProfile, error, setViewed };
+  return { profiles, activeProfile, error, setViewed };
 };

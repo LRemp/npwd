@@ -10,15 +10,21 @@ import { ServerPromiseResp } from '../../../../../typings/common';
 import LogDebugEvent from '../../../os/debug/LogDebugEvents';
 import { MockMyProfileData, MockProfilesData } from '../utils/constants';
 import { isEnvBrowser } from '../../../utils/misc';
+import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 export const matchState = {
-  profiles: atom<Profile[]>({
+  // Same problem as in 'useMatchService', we need to format these profiles. This also goes for myProfiles, below.
+  // I don't have time since Taso told me to do CI.
+  profiles: atom<FormattedProfile[]>({
     key: 'profiles',
     default: selector({
       key: 'defaultMatchProfiles',
       get: async () => {
         try {
-          const resp = await fetchNui<ServerPromiseResp<Profile[]>>(MatchEvents.GET_PROFILES);
+          const resp = await fetchNui<ServerPromiseResp<FormattedProfile[]>>(
+            MatchEvents.GET_PROFILES,
+          );
           LogDebugEvent({ action: 'ProfilesFetch', data: resp.data });
           return resp.data;
         } catch (e) {
@@ -53,7 +59,6 @@ export const matchState = {
             MatchEvents.GET_MY_PROFILE,
           );
           LogDebugEvent({ action: 'MyProfileFetch', data: resp.data });
-          // eslint-disable-next-line react-hooks/rules-of-hooks
           return resp.data;
         } catch (e) {
           console.error(e);
@@ -71,9 +76,9 @@ export const matchState = {
   }),
 };
 
-export const useUnformattedProfiles = () => useRecoilState(matchState.profiles);
-export const useUnformattedProfilesValue = () => useRecoilValue(matchState.profiles);
-export const useSetUnformattedProfiles = () => useSetRecoilState(matchState.profiles);
+export const useFormattedProfiles = () => useRecoilState(matchState.profiles);
+export const useFormattedProfilesValue = () => useRecoilValue(matchState.profiles);
+export const useSetFormattedProfiles = () => useSetRecoilState(matchState.profiles);
 
 export const useMyProfile = () => useRecoilState(matchState.myProfile);
 export const useMyProfileValue = () => useRecoilValue(matchState.myProfile);

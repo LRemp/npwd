@@ -1,6 +1,6 @@
 import { FormattedProfile, Profile } from '../../../../../typings/match';
 
-export const MockProfilesData: Profile[] = [
+export const MockProfilesData: FormattedProfile[] = [
   {
     id: 1,
     identifier: '3r523242',
@@ -16,6 +16,8 @@ export const MockProfilesData: Profile[] = [
     location: 'Grapeseed',
     tags: 'shit framework, vue sucks',
     phoneNumber: '987-6543',
+    tagList: ['shitframework', 'vue sucks'],
+    lastActiveFormatted: '1616004986',
   },
   {
     id: 2,
@@ -32,6 +34,8 @@ export const MockProfilesData: Profile[] = [
     location: 'Harmony',
     tags: 'tinkering,robotics',
     phoneNumber: '654-3219',
+    tagList: ['tinkering', 'robotics'],
+    lastActiveFormatted: '12332425',
   },
   {
     id: 3,
@@ -47,6 +51,8 @@ export const MockProfilesData: Profile[] = [
     location: 'Los Santos',
     tags: 'reading,coolstuff, coffee',
     phoneNumber: '123-4567',
+    tagList: ['reading', 'coolstuff', 'coffee'],
+    lastActiveFormatted: '12332425',
   },
 ];
 

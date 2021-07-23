@@ -1,5 +1,5 @@
 import { useSetRecoilState } from 'recoil';
-import { matchState } from './state';
+import { matchState, useFormattedProfiles, useSetFormattedProfiles } from './state';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
@@ -11,7 +11,8 @@ export const useMatchService = () => {
   const { addAlert } = useSnackbar();
   const { t } = useTranslation();
   const setNoProfileExists = useSetRecoilState(matchState.noProfileExists);
-  const setProfiles = useSetRecoilState(matchState.profiles);
+  /*const setProfiles = useSetRecoilState(matchState.profiles);*/
+  const [profiles, setProfiles] = useFormattedProfiles();
   const setProfile = useSetRecoilState(matchState.myProfile);
   const setMatches = useSetRecoilState(matchState.matches);
   const setErrorLoadingMatches = useSetRecoilState(matchState.errorLoadingMatches);
@@ -36,6 +37,11 @@ export const useMatchService = () => {
   const _setProfiles = (profiles: Profile[]): void => {
     setProfiles(profiles.map(formatProfile));
   };
+
+  // Can we even do this?
+  // We need some way to just format the profiles right away, not use useNuiEvent
+  useNuiEvent<any>('MATCH', 'formatProfiles', _setProfiles);
+
   const _setProfile = (profile: Profile) => {
     if (!profile) {
       setNoProfileExists(true);

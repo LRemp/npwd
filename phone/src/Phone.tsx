@@ -31,6 +31,7 @@ import PhoneWrapper from './PhoneWrapper';
 import dayjs from 'dayjs';
 import DefaultConfig from '../../config.json';
 import { TopLevelErrorComponent } from './ui/components/TopLevelErrorComponent';
+import { useMatchService } from './apps/match/hooks/useMatchService';
 
 function Phone() {
   const { t, i18n } = useTranslation();
@@ -65,6 +66,7 @@ function Phone() {
   usePhoneService();
   useSimcardService();
   useTwitterService();
+  useMatchService();
   useMarketplaceService();
   useBankService();
   useMessagesService();
